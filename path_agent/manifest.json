@@ -1,0 +1,19 @@
+{
+  "name": "Path Mining Agent",
+  "description": "Path Mining Agent",
+  "version": "1.1",
+  "permissions": [
+    "background", "http://*/*", "https://*/*"
+  ],
+  "background": {
+    "page": "background.html",
+    "persistent": true
+  },
+  "content_security_policy": "script-src 'self' https://code.jquery.com/jquery-2.2.4.min.js; object-src 'self'",
+  "browser_action": {
+    "default_icon": "path.png",	  
+    "default_title": "Path Mining Agent",
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}
