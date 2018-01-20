@@ -7,11 +7,13 @@ let accepted = 0;
 
 const getJob = () => fetch(`https://api.path.network/?wallet_address=${ADDRESS}`);
 
+// A note on .then vs .always: we want the "check" request implemented using
+// always to ensure that even if the request fails, the result is submitted.
 function pathMain() {
   if (!status) return false;
 
   getJob().then(({ data }) =>
-    fetch(data).then(res => {
+    fetch(data).always(res => {
       submissions += 1;
       $.post('https://api.path.network/', {
         wallet_address: ADDRESS,
