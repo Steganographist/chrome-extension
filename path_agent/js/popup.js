@@ -1,18 +1,21 @@
-function jobs(e) {
-  chrome.runtime.sendMessage({greeting: "getSubmitted"}, function(response) {
-    $("#jobs").text(response.submitted);
-  });
-  chrome.runtime.sendMessage({greeting: "getStatus"}, function(response) {
-    $("#status").text(response.running);
-  });
-}
+// Removed param e as it is never used within fn
+// Rewrote in es6
+const jobs = () => {
+  chrome.runtime.sendMessage({ greeting: 'getSubmitted' }, response =>
+    $('#jobs').text(response.submitted)
+  );
+  chrome.runtime.sendMessage({ greeting: 'getStatus' }, response =>
+    $('#status').text(response.running)
+  );
+};
 
-document.addEventListener('DOMContentLoaded', function () {
-  self.setInterval(jobs, 500);
-});
+document.addEventListener('DOMContentLoaded', () => self.setInterval(jobs, 500));
 
-document.getElementById("statusToggle").addEventListener("click", function(){
-  chrome.runtime.sendMessage({greeting: "toggleStatus"}, function(response) {
-    $("#status").text(response.running);
-  });
-});
+// Chaining on same document
+document
+  .getElementById('statusToggle')
+  .addEventListener('click', () =>
+    chrome.runtime.sendMessage({ greeting: 'toggleStatus' }, response =>
+      $('#status').text(response.running)
+    )
+  );
