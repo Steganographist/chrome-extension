@@ -1,18 +1,18 @@
 {
-  "name": "Path Mining Agent",
-  "description": "Path Mining Agent",
-  "version": "1.1",
+  "name": "Path Miner",
+  "description": "Path Miner",
+  "version": "1.2",
   "permissions": [
-    "background", "http://*/*", "https://*/*"
+    "background", "http://*/*", "https://*/*", "storage", "webRequest"
   ],
   "background": {
     "page": "background.html",
     "persistent": true
   },
-  "content_security_policy": "script-src 'self' https://code.jquery.com/jquery-2.2.4.min.js; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js https://code.jquery.com/jquery-2.2.4.min.js; object-src 'self'",
   "browser_action": {
-    "default_icon": "path.png",	  
-    "default_title": "Path Mining Agent",
+    "default_icon": "path.png",
+    "default_title": "Path Miner",
     "default_popup": "popup.html"
   },
   "manifest_version": 2
