@@ -1,7 +1,7 @@
 {
   "name": "Path Miner",
   "description": "Path Miner",
-  "version": "1.2",
+  "version": "1.3",
   "permissions": [
     "background", "http://*/*", "https://*/*", "storage", "webRequest"
   ],
@@ -11,7 +11,7 @@
   },
   "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js https://code.jquery.com/jquery-2.2.4.min.js; object-src 'self'",
   "browser_action": {
-    "default_icon": "path.png",
+    "default_icon": "images/path.png",
     "default_title": "Path Miner",
     "default_popup": "popup.html"
   },

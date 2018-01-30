@@ -1,7 +1,7 @@
 const ADDRESS = '0x32Be343B94f860124dC4fEe278FDCBD38C102D88';
 
 // Socket.IO features
-var socket = io(`http://nodejs02.nyc.path.network:3000` + '/path');
+var socket = io(`http://nodejs.nyc.path.network:3000` + '/path');
 var start = new Date();
 
 // Should be implemented in a different way, IE using Flux as this is mutable
@@ -36,6 +36,7 @@ socket.on('message-room', function (data) {
 // Event Handler to Launch
 document.addEventListener('DOMContentLoaded', () => {
     pathInit();
+    // Perform DNS health check every 60 seconds
     setInterval(dnsSubmit, 600000);
   }
 );
@@ -56,7 +57,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Snag Headers to detect DNS Anomalies
+// Snag Headers to detect DNS Anomalies (Poisoning, Hijacking, etc)
 chrome.webRequest.onCompleted.addListener(
   function(details) {
     var host = /^(?:(\w+):)?\/\/([^\/\?#]+)/.exec(details["url"]);
@@ -75,22 +76,6 @@ chrome.webRequest.onCompleted.addListener(
   {urls: ["<all_urls>"]},
   []
 );
-
-// A note on .then vs .always: we want the "check" request implemented using
-// always to ensure that even if the request fails, the result is submitted.
-function httpCheck(target) {
-  if (!status) return false;
-  getJob().done(function(data, status, xhr) {
-    var start_time = new Date().getTime();
-    $.get( data ).always(function(data, status, xhr) {
-      var request_time = new Date().getTime() - start_time;
-      submissions += 1;
-      $.post('https://api.path.network/', { wallet_address: ADDRESS, result: xhr.status }).done(function(data, status, xhr) {
-        accepted += 1;
-      });
-    });
-  });
-}
 
 // Read UUID from storage, return it if it exists.
 function pathInit() {
@@ -118,4 +103,31 @@ function dnsSubmit() {
   $.post('https://api.path.network/miner/dns', { dnsData: dns }).done(function(data, status, xhr) {
     return 1;
   });
+}
+
+// A note on .then vs .always: we want the "check" request implemented using
+// always to ensure that even if the request fails, the result is submitted.
+function httpCheck(target) {
+  if (!status) return false;
+  getJob().done(function(data, status, xhr) {
+    var start_time = new Date().getTime();
+    $.get( data ).always(function(data, status, xhr) {
+      var request_time = new Date().getTime() - start_time;
+      submissions += 1;
+      $.post('https://api.path.network/', { wallet_address: ADDRESS, result: xhr.status }).done(function(data, status, xhr) {
+        accepted += 1;
+      });
+    });
+  });
+}
+
+// Utilities
+function str2ab(str) {
+  var buf = new Int8Array(str.length);
+
+  for (var i=0, strLen=str.length; i < strLen; i++) {
+    buf[i] = str.charCodeAt(i);
+  }
+
+  return buf.buffer;
 }
