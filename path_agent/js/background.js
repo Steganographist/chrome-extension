@@ -88,13 +88,14 @@ function pathInit() {
       return 1;
     } else {
       getUuid().done(function(data, status, xhr) {
-          uuid = data;
-          storage.set({'uuid': uuid}, function(result) {
+        uuid = data;
+        storage.set({'uuid': uuid}, function(result) {
+          if(result) {
             console.log(result);
-            return 1;
-          });
-        }
-      );
+          }
+          return 1;
+        });
+      });
     }
   });
 }
